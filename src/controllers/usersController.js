@@ -68,5 +68,22 @@ const checkUserByEmail = async (req, res) => {
       res.status(500).json({ message: "Error fetching admins", error });
     }
   };
+  const getHRs = async (req, res) => {
+    try {
+      const email = req.params.email;
+    //   if (email !== req.decoded.email) {
+    //     return res.status(403).json({ message: "Unauthorized" });
+    //   }
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
+      let isHR = false;
+      if (result?.roleValue === "HR") {
+        isHR = true;
+      }
+      res.json({ isHR });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching admins", error });
+    }
+  };
 
-module.exports = { getUsers, addUser, checkUserByEmail, getAdmins };
+module.exports = { getUsers, addUser, checkUserByEmail, getAdmins, getHRs };
