@@ -31,5 +31,25 @@ const verifyAdmin = async (req, res, next) => {
     res.status(403).json({ message: "Unauthorized" });
   }
 };
+const verifyHR = async (req, res, next) => {
+  const email = req.decoded.email;
+  const query = { email: email };
+  const user = await usersCollection.findOne(query);
+  if (user?.role === "HR") {
+    next();
+  } else {
+    res.status(403).json({ message: "Unauthorized" });
+  }
+};
+const verifyEmployee = async (req, res, next) => {
+  const email = req.decoded.email;
+  const query = { email: email };
+  const user = await usersCollection.findOne(query);
+  if (user?.role === "Employee") {
+    next();
+  } else {
+    res.status(403).json({ message: "Unauthorized" });
+  }
+};
 
-module.exports = { verifyToken, verifyAdmin };
+module.exports = { verifyToken, verifyAdmin, verifyHR, verifyEmployee };
