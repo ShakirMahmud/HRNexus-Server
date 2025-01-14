@@ -54,9 +54,9 @@ const checkUserByEmail = async (req, res) => {
   const getAdmins = async (req, res) => {
     try {
       const email = req.params.email;
-    //   if (email !== req.decoded.email) {
-    //     return res.status(403).json({ message: "Unauthorized" });
-    //   }
+      if (email !== req.decoded.email) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
       const query = { email: email };
       const result = await usersCollection.findOne(query);
       let isAdmin = false;
@@ -71,9 +71,9 @@ const checkUserByEmail = async (req, res) => {
   const getHRs = async (req, res) => {
     try {
       const email = req.params.email;
-    //   if (email !== req.decoded.email) {
-    //     return res.status(403).json({ message: "Unauthorized" });
-    //   }
+      if (email !== req.decoded.email) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
       const query = { email: email };
       const result = await usersCollection.findOne(query);
       let isHR = false;
@@ -88,9 +88,9 @@ const checkUserByEmail = async (req, res) => {
   const getEmployees = async (req, res) => {
     try {
       const email = req.params.email;
-    //   if (email !== req.decoded.email) {
-    //     return res.status(403).json({ message: "Unauthorized" });
-    //   }
+      if (email !== req.decoded.email) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
       const query = { email: email };
       const result = await usersCollection.findOne(query);
       let isEmployee = false;
