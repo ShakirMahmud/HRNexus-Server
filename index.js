@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const { connectToDatabase } = require("./src/config/dbConnection");
 const usersRoutes = require("./src/routes/usersRoutes");
-const jwtCreateToken = require("./src/routes/jwtCreateToken");
+const jwtCreateToken = require("./src/utils/jwtCreateToken");
 
 const app = express();
 const port = process.env.PORT || 5000;
