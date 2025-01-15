@@ -4,7 +4,7 @@ const {verifyToken, verifyEmployee} = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.post('/', postWorkSheet);
-router.get('/', getWorkSheet);
+router.post('/', verifyToken, verifyEmployee, postWorkSheet);
+router.get('/:email?', verifyToken, getWorkSheet);
 
 module.exports = router;
