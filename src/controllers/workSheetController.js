@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { getDatabase } = require('../config/dbConnection');
 const workSheetCollection = getDatabase().collection('workSheet');
 const { verifyToken, verifyHR, verifyEmployee } = require('../middleware/authMiddleware');
@@ -44,4 +45,38 @@ const getWorkSheet = async (req, res) => {
     }
 };
 
-module.exports = { postWorkSheet, getWorkSheet };
+const getWorkSheetById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await workSheetCollection.findOne(query);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching workSheet by id", error });
+    }
+};
+
+const updateWorkSheet = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const workSheet = req.body;
+        const query = { _id: new ObjectId(id) };
+        const result = await workSheetCollection.updateOne(query, { $set: workSheet });
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ message: "Error updating workSheet", error });
+    }
+};
+
+const deleteWorkSheet = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const query = { _id: new ObjectId(id) };
+        const result = await workSheetCollection.deleteOne(query);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting workSheet", error });
+    }
+};
+
+module.exports = { postWorkSheet, getWorkSheet, getWorkSheetById, updateWorkSheet, deleteWorkSheet };
