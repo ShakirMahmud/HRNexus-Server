@@ -4,7 +4,6 @@ require("dotenv").config();
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log(authHeader);
   if (!authHeader) {
     return res.status(401).json({ message: "Token is required" });
   }
@@ -26,7 +25,7 @@ const verifyAdmin = async (req, res, next) => {
   const email = req.decoded.email;
   const query = { email: email };
   const user = await usersCollection.findOne(query);
-  if (user?.role === "admin") {
+  if (user?.roleValue === "admin") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized" });
@@ -36,7 +35,7 @@ const verifyHR = async (req, res, next) => {
   const email = req.decoded.email;
   const query = { email: email };
   const user = await usersCollection.findOne(query);
-  if (user?.role === "HR") {
+  if (user?.roleValue === "HR") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized" });
@@ -46,7 +45,7 @@ const verifyEmployee = async (req, res, next) => {
   const email = req.decoded.email;
   const query = { email: email };
   const user = await usersCollection.findOne(query);
-  if (user?.role === "Employee") {
+  if (user?.roleValue === "Employee") {
     next();
   } else {
     res.status(403).json({ message: "Unauthorized" });

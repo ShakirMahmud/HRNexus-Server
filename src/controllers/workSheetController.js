@@ -5,10 +5,8 @@ const { verifyToken, verifyHR, verifyEmployee } = require('../middleware/authMid
 const postWorkSheet = async (req, res) => {
     try {
         const workSheet = req.body;
-        console.log(workSheet);
         // send error message if not employee
         const email = workSheet.email;
-        console.log(email);
         if(email !== req.decoded.email) {
             return res.status(403).json({ message: "Unauthorized" });
         }
@@ -29,7 +27,7 @@ const getWorkSheet = async (req, res) => {
                         return res.status(403).json({ message: "Unauthorized" });
                     }
                     const query = { email: email };
-                    const result = await workSheetCollection.findOne(query);
+                    const result = await workSheetCollection.find(query).toArray();
                     res.json(result);
                 })
             })
