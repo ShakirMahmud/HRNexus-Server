@@ -5,6 +5,7 @@ require("dotenv").config();
 const { connectToDatabase } = require("./src/config/dbConnection");
 const usersRoutes = require("./src/routes/usersRoutes");
 const jwtCreateToken = require("./src/utils/jwtCreateToken");
+const workSheetRoutes = require("./src/routes/workSheetRoutes");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -21,6 +22,7 @@ async function startServer() {
     // Routes
     app.use("/jwt", jwtCreateToken);
     app.use("/users", usersRoutes);
+    app.use("/workSheet", workSheetRoutes);
 
     // Basic route
     app.get("/", (req, res) => {
