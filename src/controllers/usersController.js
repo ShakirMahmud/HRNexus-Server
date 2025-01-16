@@ -16,6 +16,17 @@ const getUsers = async (req, res) => {
   }
 };
 
+const getUserByEmail = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const query = { email: email };
+    const result = await usersCollection.findOne(query);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user by email", error });
+  }
+};
+
 const addUser = async (req, res) => {
   try {
     const user = req.body;
@@ -128,4 +139,5 @@ module.exports = {
   getHRs,
   getEmployees,
   updateUser,
+  getUserByEmail
 };
