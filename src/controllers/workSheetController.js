@@ -21,6 +21,8 @@ const postWorkSheet = async (req, res) => {
 const getWorkSheet = async (req, res) => {
     try {
         const email = req.params.email;
+        // sort workSheet by date
+
         if(email){
             await verifyToken(req, res, async () => {
                 await verifyEmployee(req, res, async () => {
@@ -28,14 +30,20 @@ const getWorkSheet = async (req, res) => {
                         return res.status(403).json({ message: "Unauthorized" });
                     }
                     const query = { email: email };
-                    const result = await workSheetCollection.find(query).toArray();
+                    const result = await workSheetCollection
+                    .find(query)
+                    .sort({ date: -1 })
+                    .toArray();
                     res.json(result);
                 })
             })
         }else{
             await verifyToken(req, res, async () => {
                 await verifyHR(req, res, async () => {
-                    const result = await workSheetCollection.find().toArray();
+                    const result = await workSheetCollection
+                    .find()
+                    .sort({ date: -1 })
+                    .toArray();
                     res.json(result);
                 })
             })
