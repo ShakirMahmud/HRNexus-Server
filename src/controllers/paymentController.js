@@ -51,10 +51,13 @@ const createPayment = async (req, res) => {
 const getPayments = async (req, res) => {
   try {
     const email = req.params.email;
+    console.log(email);
     if (email) {
       const query = { employeeEmail: email };
+      console.log(query);
       const result = await paymentCollection.find(query).toArray();
       res.json(result);
+      console.log(result);
     } else {
       const result = await paymentCollection.find().toArray();
       res.json(result);
@@ -64,4 +67,18 @@ const getPayments = async (req, res) => {
   }
 };
 
-module.exports = { createPaymentIntent, createPayment, getPayments };
+const updatePayment = async (req, res) => {
+  try {
+    const payment = req.body;
+    const id = req.params.id;
+    const query = { _id: new ObjectId(id) };
+    const result = await paymentCollection.updateOne(query, {
+      $set: payment,
+    });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: "Error updating payment", error });
+  }
+};
+
+module.exports = { createPaymentIntent, createPayment, getPayments, updatePayment };
