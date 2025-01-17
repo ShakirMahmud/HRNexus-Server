@@ -62,11 +62,13 @@ const checkUserByEmail = async (req, res) => {
       res.json({
         exists: true,
         roleValue: user.roleValue || null,
+        isFired: user.isFired || false,
       });
     } else {
       res.json({
         exists: false,
         roleValue: null,
+        isFired: false,
       });
     }
   } catch (error) {

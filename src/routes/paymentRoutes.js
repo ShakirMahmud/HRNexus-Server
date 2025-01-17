@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/paymentIntent', createPaymentIntent);
 router.post('/', createPayment);
-router.get('/:email', verifyToken, getPayments);
+router.get('/:email?', verifyToken, getPayments);
 
 module.exports = router;

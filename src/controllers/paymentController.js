@@ -8,7 +8,6 @@ const paymentCollection = getDatabase().collection("payment");
 const createPaymentIntent = async (req, res) => {
   try {
     const { salary } = req.body;
-    console.log(salary);
     const amount = parseInt(salary * 100);
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
@@ -28,11 +27,22 @@ const createPaymentIntent = async (req, res) => {
 const createPayment = async (req, res) => {
   try {
     const payment = req.body;
+    // const existingPayment = await paymentCollection.findOne({
+    //     employeeEmail,
+    //     month,
+    //     year
+    // });
+
+    // if (existingPayment) {
+    //     return res.status(400).json({ 
+    //         message: "Payment for this month and year already exists" 
+    //     });
+    // }
     const result = await paymentCollection.insertOne(payment);
     // delete each item from the cart
     // const query = {_id: {$in: payment.cartItems.map(id => new ObjectId(id))}};
     // const result2 = await cartsCollection.deleteMany(query);
-    res.json({result });
+    res.json({ result });
   } catch (error) {
     res.status(500).json({ message: "Error creating payment", error });
   }
@@ -40,13 +50,15 @@ const createPayment = async (req, res) => {
 
 const getPayments = async (req, res) => {
   try {
-    console.log(req.params);
-    const query = { email: req.params.email };
-    if(req.params.email !== req.decoded.email) {
-      return res.status(403).json({ message: "Unauthorized" });
+    const email = req.params.email;
+    if (email) {
+      const query = { employeeEmail: email };
+      const result = await paymentCollection.find(query).toArray();
+      res.json(result);
+    } else {
+      const result = await paymentCollection.find().toArray();
+      res.json(result);
     }
-    const result = await paymentCollection.find(query).toArray();
-    res.json(result);
   } catch (error) {
     res.status(500).json({ message: "Error fetching payments", error });
   }
