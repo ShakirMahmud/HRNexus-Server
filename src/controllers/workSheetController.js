@@ -26,7 +26,6 @@ const postWorkSheet = async (req, res) => {
 const getWorkSheet = async (req, res) => {
   try {
     const email = req.params.email;
-    // sort workSheet by date
 
     if (email) {
       await verifyToken(req, res, async () => {
@@ -60,7 +59,6 @@ const getWorkSheet = async (req, res) => {
 
 const getTotalSalary = async (req, res) => {
     try {
-        // Get data from the workSheetCollection
         const worksheetResults = await workSheetCollection.aggregate([
             {
                 $lookup: {
@@ -87,15 +85,12 @@ const getTotalSalary = async (req, res) => {
             },
         ]).toArray();
 
-        // Fetch all HR users directly from the users collection
         const hrUsers = await usersCollection.find({ roleValue: "HR" }).toArray();
         const hrSalaries = hrUsers.map((hr) => ({
             _id: hr.email,
-            totalSalary: hr.salaryPerHour, // For HR, use their salaryPerHour as the total salary
-            totalHours: 0, // HR does not log hours
+            totalSalary: hr.salaryPerHour, 
+            totalHours: 0,
         }));
-
-        // Combine HR salaries with worksheet results
         const combinedResults = [...worksheetResults, ...hrSalaries];
 
         res.json(combinedResults);
@@ -105,8 +100,6 @@ const getTotalSalary = async (req, res) => {
     }
 };
 
-
-  
 
 const getWorkSheetById = async (req, res) => {
   try {
