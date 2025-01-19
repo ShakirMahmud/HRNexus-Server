@@ -118,11 +118,14 @@ const getHRs = async (req, res) => {
 const getEmployees = async (req, res) => {
   try {
     const email = req.params.email;
+    
     if (email !== req.decoded.email) {
       return res.status(403).json({ message: "Unauthorized" });
     }
-    const query = { email: email };
+    const query = { email: { $regex: `^${email}$`, $options: "i" } };
+    
     const result = await usersCollection.findOne(query);
+
     let isEmployee = false;
     if (result?.roleValue === "Employee") {
       isEmployee = true;

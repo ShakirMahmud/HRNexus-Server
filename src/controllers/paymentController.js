@@ -1,6 +1,5 @@
 const { ObjectId } = require("mongodb");
 const { getDatabase } = require("../config/dbConnection");
-const cartsCollection = getDatabase().collection("carts");
 require("dotenv").config();
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const paymentCollection = getDatabase().collection("payment");
@@ -39,9 +38,6 @@ const createPayment = async (req, res) => {
     //     });
     // }
     const result = await paymentCollection.insertOne(payment);
-    // delete each item from the cart
-    // const query = {_id: {$in: payment.cartItems.map(id => new ObjectId(id))}};
-    // const result2 = await cartsCollection.deleteMany(query);
     res.json({ result });
   } catch (error) {
     res.status(500).json({ message: "Error creating payment", error });
@@ -51,13 +47,10 @@ const createPayment = async (req, res) => {
 const getPayments = async (req, res) => {
   try {
     const email = req.params.email;
-    console.log(email);
     if (email) {
       const query = { employeeEmail: email };
-      console.log(query);
       const result = await paymentCollection.find(query).toArray();
       res.json(result);
-      console.log(result);
     } else {
       const result = await paymentCollection.find().toArray();
       res.json(result);
