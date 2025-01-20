@@ -51,19 +51,14 @@ const verifyEmployee = async (req, res, next) => {
     res.status(403).json({ message: "Unauthorized" });
   }
 };
-// In authMiddleware.js
+
 const verifyAdminOrHR = async (req, res, next) => {
   try {
-      // Assuming req.decoded is set by verifyToken middleware
       const email = req.decoded.email;
-      
-      // Find the user in the database
       const usersCollection = getDatabase().collection('users');
       const user = await usersCollection.findOne({ email });
-
-      // Check if the user is either admin or HR
       if (user && (user.roleValue === 'admin' || user.roleValue === 'HR')) {
-          next(); // Allow access
+          next();
       } else {
           return res.status(403).json({ 
               message: "Access denied. Requires admin or HR privileges." 

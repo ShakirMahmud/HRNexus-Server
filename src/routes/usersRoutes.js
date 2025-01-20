@@ -4,9 +4,9 @@ const { verifyToken, verifyAdmin, verifyEmployee, verifyHR, verifyAdminOrHR } = 
 
 const router = express.Router();
 
-router.get('/', getUsers);
 router.post('/', addUser);
 router.get('/check', checkUserByEmail);
+router.get('/', verifyToken, getUsers);
 router.get('/admin/:email', verifyToken, getAdmins);
 router.get('/hr/:email', verifyToken, getHRs);
 router.get('/employee/:email', verifyToken, getEmployees);

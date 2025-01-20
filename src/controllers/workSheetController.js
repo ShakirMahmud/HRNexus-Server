@@ -11,7 +11,6 @@ const {
 const postWorkSheet = async (req, res) => {
   try {
     const workSheet = req.body;
-    // send error message if not employee
     const email = workSheet.email;
     if (email !== req.decoded.email) {
       return res.status(403).json({ message: "Unauthorized" });

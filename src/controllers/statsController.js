@@ -5,7 +5,7 @@ const usersCollection = getDatabase().collection("users");
 
 const adminStats = async (req, res) => {
     try {
-        // 1. User Count and Role Distribution
+        // User Count and Role Distribution
         const userStats = await usersCollection.aggregate([
             {
                 $group: {
@@ -15,11 +15,10 @@ const adminStats = async (req, res) => {
             }
         ]).toArray();
 
-        // 2. Average Work Hours per Month
+        // Average Work Hours per Month
         const avgWorkHoursPerMonth = await workSheetCollection.aggregate([
             {
                 $addFields: {
-                    // Ensure the date is properly parsed
                     parsedDate: { 
                         $toDate: "$date" 
                     }
@@ -51,7 +50,7 @@ const adminStats = async (req, res) => {
             { $limit: 6 }
         ]).toArray();
 
-        // 3. Total Salary Paid and Pending
+        // Total Salary Paid and Pending
         const salaryStats = await paymentCollection.aggregate([
             {
                 $group: {
@@ -62,7 +61,7 @@ const adminStats = async (req, res) => {
             }
         ]).toArray();
 
-        // 4. Most and Least Working Employees
+        // Most and Least Working Employees
         const employeeWorkStats = await workSheetCollection.aggregate([
             {
                 $group: {
@@ -82,14 +81,13 @@ const adminStats = async (req, res) => {
             { $limit: 5 }
         ]).toArray();
 
-        // 5. Monthly Payment Trends
+        // Monthly Payment Trends
         const monthlyPaymentTrends = await paymentCollection.aggregate([
             {
                 $match: { status: "completed" }
             },
             {
                 $addFields: {
-                    // Use month and year directly from the document
                     monthYear: {
                         $concat: [
                             { $toString: "$year" },
@@ -113,7 +111,6 @@ const adminStats = async (req, res) => {
             { $limit: 6 }
         ]).toArray();
 
-        // Prepare Response
         const stats = {
             userRoleDistribution: userStats.reduce((acc, stat) => {
                 acc[stat._id] = stat.count;
@@ -157,7 +154,7 @@ const hrStats = async (req, res) => {
     try {
         
 
-        // 1. Average Work Hours per Employee per Month
+        // Average Work Hours per Employee per Month
         const avgWorkHoursPerEmployee = await workSheetCollection.aggregate([
             {
                 $addFields: {
@@ -206,7 +203,7 @@ const hrStats = async (req, res) => {
             }
         ]).toArray();
 
-        // 2. Top and Bottom Performing Employees
+        //  Top and Bottom Performing Employees
         const employeePerformanceRanking = await workSheetCollection.aggregate([
             {
                 $group: {
@@ -240,7 +237,7 @@ const hrStats = async (req, res) => {
             }
         ]).toArray();
 
-        // 3. Task Distribution by Type
+        //  Task Distribution by Type
         const taskTypeDistribution = await workSheetCollection.aggregate([
             {
                 $group: {
@@ -254,7 +251,7 @@ const hrStats = async (req, res) => {
             }
         ]).toArray();
 
-        // 4. Monthly Work Trend
+        //  Monthly Work Trend
         const monthlyWorkTrend = await workSheetCollection.aggregate([
             {
                 $addFields: {
@@ -278,11 +275,11 @@ const hrStats = async (req, res) => {
                 }
             },
             {
-                $limit: 6 // Last 6 months
+                $limit: 6
             }
         ]).toArray();
 
-        // 5. Employee Task Breakdown
+        // Employee Task Breakdown
         const employeeTaskBreakdown = await workSheetCollection.aggregate([
             {
                 $group: {
@@ -317,7 +314,6 @@ const hrStats = async (req, res) => {
             }
         ]).toArray();
 
-        // Prepare Response
         const hrStats = {
             avgWorkHoursPerEmployee,
             employeePerformanceRanking: {

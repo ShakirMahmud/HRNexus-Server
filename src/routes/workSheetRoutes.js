@@ -4,7 +4,7 @@ const {verifyToken, verifyEmployee} = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.get('/totalSalary/:email?', getTotalSalary);
+router.get('/totalSalary/:email?',verifyToken, getTotalSalary);
 router.post('/',verifyToken, verifyEmployee, postWorkSheet);
 router.get('/:email?', verifyToken, getWorkSheet);
 router.get('/:id', verifyToken, getWorkSheetById);

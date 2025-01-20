@@ -26,17 +26,6 @@ const createPaymentIntent = async (req, res) => {
 const createPayment = async (req, res) => {
   try {
     const payment = req.body;
-    // const existingPayment = await paymentCollection.findOne({
-    //     employeeEmail,
-    //     month,
-    //     year
-    // });
-
-    // if (existingPayment) {
-    //     return res.status(400).json({ 
-    //         message: "Payment for this month and year already exists" 
-    //     });
-    // }
     const result = await paymentCollection.insertOne(payment);
     res.json({ result });
   } catch (error) {
