@@ -5,7 +5,7 @@
 
 ## 📋 Project Overview
 
-This is the server-side implementation for WorkFlow Pro, providing robust backend services for employee management, authentication, and data processing.
+This is the server-side implementation for HRNexus, providing robust backend services for employee management, authentication, and data processing.
 
 ## 🛠 Technologies Used
 
